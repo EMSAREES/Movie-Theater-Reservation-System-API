@@ -2,6 +2,8 @@
 
 This is a movie reservation system created to learn more about Flask. I'm not sure if I'm using the correct structure or dependency, but this is the first test.
 
+>The project has a lot of comments in Spanish, which I only use as a guide for myself to understand what it does.
+
 -----------------------------------------------------------------------------
 > **Note:** This table represents the initial idea of the available endpoints.  
 > It may not be final — endpoints could be added, modified, or removed as the project evolves.
