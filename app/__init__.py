@@ -31,6 +31,13 @@ def create_app (config_name: str = 'default') -> Flask:
     from app.routes.api_v1 import api_v1_blueprint
     app.register_blueprint(api_v1_blueprint, url_prefix='/api/v1')
 
+
+    # Registrar middlewares
+    # Se registran DESPUÉS de los blueprints para que los hooks
+    # before_request/after_request se apliquen a todas las rutas
+    from app.middlewares import register_middlewares
+    register_middlewares(app)
+    
     #egistrar manejadores de errores globales
     _register_error_handlers(app)
     
