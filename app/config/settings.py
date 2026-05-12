@@ -19,11 +19,11 @@ class BaseConfig:
     
     # Construcción de la URL de conexión a PostgreSQL
     # Formato: postgresql://usuario:password@host:puerto/nombre_bd
-    DB_HOST = os.environ.get('DB_HOST', 'localhost')
-    DB_PORT = os.environ.get('DB_PORT', '5432')
-    DB_NAME = os.environ.get('DB_NAME', 'cinema_db')
-    DB_USER = os.environ.get('DB_USER', 'postgres')
-    DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
+    DB_HOST = os.environ.get('DB_HOST')
+    DB_PORT = os.environ.get('DB_PORT')
+    DB_NAME = os.environ.get('DB_NAME')
+    DB_USER = os.environ.get('DB_USER')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD')
     
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql://{DB_USER}:{DB_PASSWORD}"
@@ -51,14 +51,15 @@ class DevelopmentConfig(BaseConfig):
 class TestingConfig(BaseConfig):
     """
     Configuración para pruebas automatizadas.
-    Usa una base de datos separada para no contaminar datos reales.
     """
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'TEST_DATABASE_URL',
-        'postgresql://postgres:@localhost:5432/cinema_test_db'
+
+    SQLALCHEMY_DATABASE_URI = (
+        f"postgresql://{BaseConfig.DB_USER}:{BaseConfig.DB_PASSWORD}"
+        f"@{BaseConfig.DB_HOST}:{BaseConfig.DB_PORT}/{BaseConfig.DB_NAME}"
     )
+
     SQLALCHEMY_ECHO = False
 
 

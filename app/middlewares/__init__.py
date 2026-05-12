@@ -1,6 +1,4 @@
 from app.middlewares.auth_middleware import register_auth_middleware
-from app.middlewares.logging_middleware import register_logging_middleware
-from app.middlewares.security_middleware import register_security_middleware
 
 def register_middlewares(app):
     """
@@ -12,9 +10,9 @@ def register_middlewares(app):
     Args:
         app: La instancia de Flask
     """
-    register_logging_middleware(app)    # Primero: loguear el request
-    register_auth_middleware(app)       # Segundo: verificar identidad
-    register_security_middleware(app)   # Tercero: agregar headers de seguridad
+   
+    register_auth_middleware(app)       
+    
 
 
 __all__ = ['register_middlewares']

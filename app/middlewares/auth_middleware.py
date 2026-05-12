@@ -48,7 +48,8 @@ def register_auth_middleware(app):
                 # Cargar el usuario desde la BD
                 # Esto hace UNA query por request para rutas autenticadas
                 from app.models.user import User
-                user = User.query.get(g.current_user_id)
+                from app import db
+                user = db.session.get(User, g.current_user_id)
 
                 if user and user.is_active:
                     g.current_user = user

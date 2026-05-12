@@ -160,3 +160,12 @@ rooms_response_schema = RoomResponseSchema(many=True)
 screening_create_schema = ScreeningCreateSchema()
 screening_response_schema = ScreeningResponseSchema()
 screenings_response_schema = ScreeningResponseSchema(many=True)
+
+# Schema de actualización de función (campos opcionales)
+class ScreeningUpdateSchema(Schema):
+    price    = fields.Decimal(validate=validate.Range(min=0.01))
+    language = fields.Str(validate=validate.Length(min=1, max=50))
+    format   = fields.Str(validate=validate.OneOf(['2D', '3D', 'IMAX', '4DX']))
+    status   = fields.Str(validate=validate.OneOf(
+        ['scheduled', 'ongoing', 'finished', 'cancelled']
+    ))

@@ -22,14 +22,33 @@ def create_app (config_name: str = 'default') -> Flask:
     migrate.init_app(app, db)  
     jwt.init_app(app) 
 
+    # Verificar conexión a base de datos
+    with app.app_context():
+        try:
+            from sqlalchemy import text
+
+            db.session.execute(text("SELECT 1"))
+
+            print("\n Database connected successfully\n")
+
+        except Exception as e:
+            print("\n Database connection failed\n")
+            print(e)
+
     # CORS: permite que un frontend (ej: React en localhost:3000)
     # pueda hacer requests a nuestra API
     CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 
     # Un Blueprint es un grupo de rutas relacionadas.
     # Los importamos aquí para evitar importaciones circulares.
     from app.routes.api_v1 import api_v1_blueprint
     app.register_blueprint(api_v1_blueprint, url_prefix='/api/v1')
+
+    @app.route("/")
+    def welcome():
+        return {"message": "Bienvenido a la Movie Theater Reservation System API"}
+
 
 
     # Registrar middlewares
@@ -38,7 +57,11 @@ def create_app (config_name: str = 'default') -> Flask:
     from app.middlewares import register_middlewares
     register_middlewares(app)
     
-    #egistrar manejadores de errores globales
+    # Importar modelos para que Flask-Migrate los detecte en las migraciones
+    # Si un modelo no se importa aquí, `flask db migrate` no creará su tabla
+    from app.models import User, Movie, Room, Screening, Ticket  # noqa: F401
+
+    # Registrar manejadores de errores globales
     _register_error_handlers(app)
     
     return app

@@ -2,7 +2,7 @@ import bcrypt
 from datetime import datetime, timezone
 from app import db
 
-class Use(db.Model):
+class User(db.Model):
 
     __tablename__ = 'users' # nombre de la tabla
 
